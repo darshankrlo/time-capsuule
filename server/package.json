@@ -10,6 +10,7 @@
     "unlock": "node src/jobs/runOnce.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
+  "jest": { "transform": {} },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
