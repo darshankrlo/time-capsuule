@@ -5,6 +5,7 @@ import { env } from "./config/env.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 import authRoutes from "./routes/auth.routes.js";
 import capsuleRoutes from "./routes/capsule.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/capsules", capsuleRoutes);
+app.use("/api/admin", adminRoutes);
 // routes will be added here
 
 app.use(notFound);
