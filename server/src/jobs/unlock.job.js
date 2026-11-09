@@ -80,8 +80,8 @@ export async function unlockDueCapsules() {
 }
 
 export function startUnlockJob() {
-  cron.schedule("0 * * * *", () => {
+  cron.schedule("*/5 * * * *", () => {
     unlockDueCapsules().catch((err) => console.error("Unlock job error:", err.message));
   });
-  console.log("Unlock job scheduled (hourly)");
+  console.log("Unlock job scheduled (every 5 minutes)");
 }
