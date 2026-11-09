@@ -72,3 +72,8 @@ label { display: block; margin-bottom: 1rem; }
   .container { padding: 0.75rem; }
 }
 .narrow { max-width: 420px; margin: 2rem auto; }
+.row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+.tabs { display: flex; gap: 0.5rem; margin: 1rem 0; }
+.secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.tag { display: inline-block; background: var(--border); border-radius: 999px; padding: 0.1rem 0.6rem; margin: 0 0.3rem 0.3rem 0; font-size: 0.85rem; }
+.letter { white-space: pre-wrap; line-height: 1.6; }
