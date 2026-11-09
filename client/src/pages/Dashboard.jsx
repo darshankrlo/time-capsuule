@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function Dashboard() {
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const [capsules, setCapsules] = useState([]);
   const [tab, setTab] = useState("locked");
   const [loading, setLoading] = useState(true);
@@ -30,26 +30,48 @@ export default function Dashboard() {
   if (loading) return <Loader text="Loading your capsules..." />;
   if (error) return <ErrorMessage message={error} />;
 
+  const lockedCount = capsules.filter((c) => c.status === "locked").length;
+  const unlockedCount = capsules.length - lockedCount;
   const visible = capsules.filter((c) => c.status === tab);
 
   return (
     <div>
-      <div className="row">
-        <h1>My capsules</h1>
-        <Link to="/capsules/new" className="btn">New capsule</Link>
+      <div className="page-header">
+        <h1>Hello{user ? `, ${user.name.split(" ")[0]}` : ""} 👋</h1>
+        <p className="subtitle">Letters from your past self, waiting for the right moment.</p>
+      </div>
+
+      <div className="stats">
+        <div className="stat">
+          <div className="stat-num">{lockedCount}</div>
+          <div className="stat-label">Sealed capsules</div>
+        </div>
+        <div className="stat">
+          <div className="stat-num">{unlockedCount}</div>
+          <div className="stat-label">Ready to read</div>
+        </div>
       </div>
 
       <div className="tabs">
-        <button className={tab === "locked" ? "" : "secondary"} onClick={() => setTab("locked")}>
+        <button className={`tab ${tab === "locked" ? "active" : ""}`} onClick={() => setTab("locked")}>
           Locked
         </button>
-        <button className={tab === "unlocked" ? "" : "secondary"} onClick={() => setTab("unlocked")}>
+        <button className={`tab ${tab === "unlocked" ? "active" : ""}`} onClick={() => setTab("unlocked")}>
           Unlocked
         </button>
       </div>
 
       {visible.length === 0 ? (
-        <p className="muted">No {tab} capsules yet.</p>
+        <div className="empty">
+          <div className="empty-icon">{tab === "locked" ? "✉️" : "📭"}</div>
+          <h3>No {tab} capsules yet</h3>
+          <p className="muted">
+            {tab === "locked"
+              ? "Write a letter to your future self and seal it."
+              : "Your unlocked capsules will show up here."}
+          </p>
+          {tab === "locked" && <Link to="/capsules/new" className="btn">Write your first letter</Link>}
+        </div>
       ) : (
         <div className="grid">
           {visible.map((c) => (

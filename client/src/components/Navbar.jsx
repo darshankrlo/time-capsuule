@@ -12,17 +12,20 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link to="/dashboard" className="brand">Time Capsule</Link>
+      <Link to="/dashboard" className="brand">
+        <span className="brand-icon">⏳</span>
+        Time Capsule
+      </Link>
       <div className="nav-links">
         {user ? (
           <>
-            <Link to="/capsules/new">New capsule</Link>
-            <button onClick={handleLogout}>Log out</button>
+            <Link to="/capsules/new" className="btn">+ New capsule</Link>
+            <button className="ghost" onClick={handleLogout}>Log out</button>
           </>
         ) : (
           <>
             <Link to="/login">Log in</Link>
-            <Link to="/register">Sign up</Link>
+            <Link to="/register" className="btn">Sign up</Link>
           </>
         )}
       </div>

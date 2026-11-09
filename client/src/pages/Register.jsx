@@ -47,8 +47,9 @@ export default function Register() {
 
   return (
     <div className="card narrow">
-      <h1>Sign up</h1>
-      <form onSubmit={handleSubmit} noValidate>
+        <h1>Create your account</h1>
+        <p className="subtitle">Start writing letters to your future self.</p>
+        <form onSubmit={handleSubmit} noValidate>
         <label>
           Name
           <input name="name" value={form.name} onChange={handleChange} />

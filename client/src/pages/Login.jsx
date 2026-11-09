@@ -46,7 +46,8 @@ export default function Login() {
 
   return (
     <div className="card narrow">
-      <h1>Log in</h1>
+        <h1>Welcome back</h1>
+        <p className="subtitle">Log in to open your capsules.</p>
       <form onSubmit={handleSubmit} noValidate>
         <label>
           Email
