@@ -26,7 +26,12 @@ export async function createCapsule(req, res, next) {
     const { title, content, unlockAt } = req.body;
 
     const attachments = req.file
-      ? [{ filename: req.file.originalname, path: req.file.path, mimeType: req.file.mimetype }]
+      ? [{
+        filename: req.file.originalname,
+        mimeType: req.file.mimetype,
+        size: req.file.size,
+        data: req.file.buffer,
+        }]
       : [];
 
     letter = await Letter.create({ userId: req.user.id, content, attachments });
@@ -76,7 +81,7 @@ export async function getCapsule(req, res, next) {
       throw new AppError(403, "CAPSULE_LOCKED", "This capsule is still locked");
     }
 
-    const letter = await Letter.findById(capsule.mongo_letter_id);
+    const letter = await Letter.findById(capsule.mongo_letter_id).select("-attachments.data");
     res.status(200).json({
       capsule: {
         id: capsule.id,
@@ -84,7 +89,10 @@ export async function getCapsule(req, res, next) {
         unlock_at: capsule.unlock_at,
         status: capsule.status,
         content: letter?.content ?? null,
-        attachments: letter?.attachments ?? [],
+        attachments: (letter?.attachments ?? []).map((a) => ({
+          filename: a.filename,
+          mimeType: a.mimeType
+        })),
         analysis: letter?.analysis ?? null,
       },
     });
@@ -130,6 +138,27 @@ export async function deleteCapsule(req, res, next) {
     await Letter.findByIdAndDelete(capsule.mongo_letter_id);
 
     res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getAttachment(req, res, next) {
+  try {
+    const id = parseId(req.params.id);
+    const capsule = await findOwned(id, req.user.id);
+
+    if (capsule.status === "locked" && new Date(capsule.unlock_at) > new Date()) {
+      throw new AppError(403, "CAPSULE_LOCKED", "This capsule is still locked");
+    }
+
+    const letter = await Letter.findById(capsule.mongo_letter_id);
+    const file = letter?.attachments?.[0];
+    if (!file?.data) throw new AppError(404, "NOT_FOUND", "No attachment found");
+
+    res.set("Content-Type", file.mimeType);
+    res.set("Content-Disposition", `inline; filename="${encodeURIComponent(file.filename)}"`);
+    res.status(200).send(Buffer.from(file.data));
   } catch (err) {
     next(err);
   }

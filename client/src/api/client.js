@@ -38,3 +38,10 @@ export async function api(path, { method = "GET", body, token } = {}) {
   }
   return data;
 }
+export async function apiBlob(path, token) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) throw new ApiError(res.status, "ERROR", "Could not load attachment");
+  return res.blob();
+}

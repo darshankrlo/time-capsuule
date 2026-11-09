@@ -11,6 +11,7 @@ import { auth } from "../middleware/auth.js";
 import { validate } from "../middleware/validate.js";
 import { upload } from "../middleware/upload.js";
 import { createCapsuleLimiter } from "../middleware/rateLimit.js";
+router.get("/:id/attachment", getAttachment);
 
 const router = Router();
 
