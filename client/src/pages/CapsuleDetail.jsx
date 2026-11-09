@@ -47,12 +47,14 @@ export default function CapsuleDetail() {
 
   if (locked) {
     return (
-      <div className="card">
-        <h1>🔒 Still sealed</h1>
-        <p className="muted">This capsule can't be opened until its unlock date.</p>
-        <Link to="/dashboard">Back to dashboard</Link>
-        {" · "}
-        <button className="secondary" onClick={handleDelete}>Delete</button>
+      <div className="card sealed">
+        <div className="sealed-icon">🔒</div>
+        <h1>Still sealed</h1>
+        <p className="subtitle">This capsule can't be opened until its unlock date.</p>
+        <div className="row" style={{ justifyContent: "center" }}>
+          <Link to="/dashboard" className="btn secondary">Back to dashboard</Link>
+          <button className="danger" onClick={handleDelete}>Delete</button>
+        </div>
       </div>
     );
   }
@@ -61,7 +63,7 @@ export default function CapsuleDetail() {
     return (
       <div>
         <ErrorMessage message={error} />
-        <Link to="/dashboard">Back to dashboard</Link>
+        <Link to="/dashboard" className="back-link">← Back to dashboard</Link>
       </div>
     );
   }
@@ -70,36 +72,47 @@ export default function CapsuleDetail() {
 
   return (
     <div>
-      <Link to="/dashboard">← Back</Link>
-      <div className="card">
-        <h1>{capsule.title}</h1>
-        <p className="muted">Unlocked {new Date(capsule.unlock_at).toLocaleString()}</p>
+      <Link to="/dashboard" className="back-link">← Back</Link>
+
+      <div className="card letter-paper">
+        <span className="badge unlocked">🔓 Unlocked</span>
+        <h1 style={{ marginTop: "0.6rem" }}>{capsule.title}</h1>
+        <p className="muted">Opened {new Date(capsule.unlock_at).toLocaleString()}</p>
         <p className="letter">{capsule.content}</p>
         {capsule.attachments.length > 0 && (
-          <p className="muted">Attachment: {capsule.attachments[0].filename}</p>
+          <p className="muted">📎 {capsule.attachments[0].filename}</p>
         )}
       </div>
 
       <div className="card">
-        <h2>Reflection</h2>
+        <h2>✨ Reflection</h2>
         {analysis ? (
-          <>
-            <p><b>Mood:</b> {analysis.mood}</p>
-            <p>
-              <b>Themes:</b>{" "}
+          <div className="reflection-grid">
+            <div className="reflection-item">
+              <div className="label">Mood</div>
+              {analysis.mood}
+            </div>
+            <div className="reflection-item">
+              <div className="label">Themes</div>
               {analysis.themes.map((t) => (
                 <span key={t} className="tag">{t}</span>
               ))}
-            </p>
-            <p>{analysis.summary}</p>
-            <p><i>{analysis.reflectionQuestion}</i></p>
-          </>
+            </div>
+            <div className="reflection-item" style={{ gridColumn: "1 / -1" }}>
+              <div className="label">Summary</div>
+              {analysis.summary}
+            </div>
+            <div className="reflection-item reflection-question">
+              <div className="label">A question for today's you</div>
+              {analysis.reflectionQuestion}
+            </div>
+          </div>
         ) : (
           <p className="muted">No AI analysis is available for this capsule.</p>
         )}
       </div>
 
-      <button className="secondary" onClick={handleDelete}>Delete capsule</button>
+      <button className="danger" onClick={handleDelete}>Delete capsule</button>
     </div>
   );
 }
