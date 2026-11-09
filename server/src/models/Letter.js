@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 const attachmentSchema = new mongoose.Schema(
   {
     filename: String,
-    path: String,
     mimeType: String,
+    size: Number,
+    data: Buffer,
   },
   { _id: false }
 );

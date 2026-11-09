@@ -184,3 +184,4 @@ textarea { resize: vertical; }
   .reflection-grid { grid-template-columns: 1fr; }
   .narrow { margin: 1.5rem auto; }
 }
+.attachment-img { max-width: 100%; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border); }

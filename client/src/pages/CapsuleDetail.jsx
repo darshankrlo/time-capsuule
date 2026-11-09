@@ -4,6 +4,7 @@ import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
+import Attachment from "../components/Attachment";
 
 export default function CapsuleDetail() {
   const { id } = useParams();
@@ -80,7 +81,7 @@ export default function CapsuleDetail() {
         <p className="muted">Opened {new Date(capsule.unlock_at).toLocaleString()}</p>
         <p className="letter">{capsule.content}</p>
         {capsule.attachments.length > 0 && (
-          <p className="muted">📎 {capsule.attachments[0].filename}</p>
+            <Attachment capsuleId={id} file={capsule.attachments[0]} token={token} />
         )}
       </div>
 
