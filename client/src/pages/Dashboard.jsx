@@ -18,6 +18,8 @@ export default function Dashboard() {
       try {
         const data = await api("/capsules", { token });
         setCapsules(data.capsules);
+        const hasLocked = data.capsules.some((c) => c.status === "locked");
+        if (!hasLocked && data.capsules.length > 0) setTab("unlocked");
       } catch (err) {
         setError(err.message);
       } finally {
@@ -67,10 +69,16 @@ export default function Dashboard() {
           <h3>No {tab} capsules yet</h3>
           <p className="muted">
             {tab === "locked"
-              ? "Write a letter to your future self and seal it."
+              ? capsules.length > 0
+                ? "All your capsules are open. Seal a new one for the future."
+                : "Write a letter to your future self and seal it."
               : "Your unlocked capsules will show up here."}
           </p>
-          {tab === "locked" && <Link to="/capsules/new" className="btn">Write your first letter</Link>}
+          {tab === "locked" && (
+            <Link to="/capsules/new" className="btn">
+              {capsules.length > 0 ? "Seal a new capsule" : "Write your first letter"}
+            </Link>
+          )}
         </div>
       ) : (
         <div className="grid">
