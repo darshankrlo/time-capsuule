@@ -4,6 +4,7 @@ import {
   createCapsule,
   listCapsules,
   getCapsule,
+  getAttachment,
   updateCapsule,
   deleteCapsule,
 } from "../controllers/capsule.controller.js";
@@ -11,7 +12,6 @@ import { auth } from "../middleware/auth.js";
 import { validate } from "../middleware/validate.js";
 import { upload } from "../middleware/upload.js";
 import { createCapsuleLimiter } from "../middleware/rateLimit.js";
-router.get("/:id/attachment", getAttachment);
 
 const router = Router();
 
@@ -35,6 +35,7 @@ router.use(auth);
 
 router.get("/", listCapsules);
 router.post("/", createCapsuleLimiter, upload, validate(createSchema), createCapsule);
+router.get("/:id/attachment", getAttachment);
 router.get("/:id", getCapsule);
 router.put("/:id", validate(updateSchema), updateCapsule);
 router.delete("/:id", deleteCapsule);
