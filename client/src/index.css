@@ -185,3 +185,4 @@ textarea { resize: vertical; }
   .narrow { margin: 1.5rem auto; }
 }
 .attachment-img { max-width: 100%; border-radius: 12px; margin-top: 1rem; border: 1px solid var(--border); }
+.success { background: var(--success-soft); color: var(--success); padding: 0.65rem 0.85rem; border-radius: 10px; font-size: 0.9rem; }
