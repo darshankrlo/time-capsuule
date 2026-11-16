@@ -31,3 +31,11 @@ CREATE TABLE IF NOT EXISTS capsule_tags (
 
 CREATE INDEX IF NOT EXISTS idx_capsules_user ON capsules(user_id);
 CREATE INDEX IF NOT EXISTS idx_capsules_status_unlock ON capsules(status, unlock_at);
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);

@@ -59,6 +59,9 @@ export default function Login() {
           <input name="password" type="password" value={form.password} onChange={handleChange} />
           <span className="field-error">{errors.password}</span>
         </label>
+        <p style={{ textAlign: "right", marginTop: "-0.5rem" }}>
+          <Link to="/forgot-password">Forgot password?</Link>
+        </p>
         <ErrorMessage message={submitError} />
         <button type="submit" disabled={submitting}>
           {submitting ? "Logging in..." : "Log in"}
